@@ -1,13 +1,20 @@
 {
-  "name": "mapnik",
+  "name": "@koordinates/mapnik",
   "description": "Tile rendering library for node",
-  "url": "http://github.com/mapnik/node-mapnik",
+  "url": "http://github.com/koordinates/node-mapnik",
   "homepage": "http://mapnik.org",
   "author": "Dane Springmeyer <dane@mapbox.com> (mapnik.org)",
   "version": "4.6.0-dev",
   "mapnik_version": "4.0.0",
   "main": "index.js",
   "private": true,
+  "binary": {
+    "module_name": "mapnik",
+    "module_path": "./lib/binding/",
+    "host": "https://kx-public-node-binaries.s3.amazonaws.com",
+    "remote_path": "./{name}/v{version}/{configuration}/{toolset}/",
+    "package_name": "{platform}-{arch}.tar.gz"
+  },
   "bugs": {
     "email": "artem@mapnik.org",
     "url": "http://github.com/mapnik/node-mapnik/issues"
@@ -31,6 +38,7 @@
   ],
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.x",
     "node-addon-api": "^8.0.0",
     "node-gyp-build": "^4.8.1",
     "prebuildify": "^6.0.1"

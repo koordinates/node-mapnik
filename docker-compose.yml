@@ -1,0 +1,16 @@
+---
+version: "3.9"
+
+services:
+  mapnikbuilder:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile.kx
+    environment:
+      - NPM_TOKEN
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - PATCH_VERSION_NUMBER
+    volumes:
+      - .:/src
