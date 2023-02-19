@@ -16,9 +16,6 @@ deps/geometry/include/mapbox/geometry.hpp:
 node_modules:
 	npm install --ignore-scripts --clang
 
-mason_packages/.link/bin/mapnik-config:
-	./scripts/install_deps.sh
-
 pre_build_check:
 	@node -e "console.log('\033[94mNOTICE: to build from source you need mapnik >=',require('./package.json').mapnik_version,'\033[0m');"
 	@echo "Looking for mapnik-config on your PATH..."
@@ -32,11 +29,11 @@ debug_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp node_modul
 	V=1 ./node_modules/.bin/node-pre-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --debug --clang
 	@echo "run 'make clean' for full rebuild"
 
-release: mason_packages/.link/bin/mapnik-config
-	CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" PATH="./mason_packages/.link/bin/:${PATH}" $(MAKE) release_base
+release:
+	CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" $(MAKE) release_base
 
-debug: mason_packages/.link/bin/mapnik-config
-	CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" PATH="./mason_packages/.link/bin/:${PATH}" $(MAKE) debug_base
+debug:
+	CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" $(MAKE) debug_base
 
 coverage:
 	./scripts/coverage.sh
@@ -74,5 +71,10 @@ testpack:
 	npm pack
 	tar -ztvf *tgz
 	rm -f ./*tgz
+
+publish:
+	npm version --git-tag-version=false "3.99.$(PATCH_VERSION_NUMBER)"
+	./node_modules/node-pre-gyp/bin/node-pre-gyp package publish
+	npm publish --access=restricted
 
 .PHONY: test docs

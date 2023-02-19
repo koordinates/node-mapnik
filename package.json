@@ -1,16 +1,16 @@
 {
-  "name": "mapnik",
+  "name": "@koordinates/mapnik",
   "description": "Tile rendering library for node",
-  "url": "http://github.com/mapnik/node-mapnik",
+  "url": "http://github.com/koordinates/node-mapnik",
   "homepage": "http://mapnik.org",
   "author": "Dane Springmeyer <dane@mapbox.com> (mapnik.org)",
-  "version": "3.7.2",
-  "mapnik_version":"v3.0.20",
+  "version": "3.99.3",
+  "mapnik_version": "v3.0.20",
   "main": "./lib/mapnik.js",
   "binary": {
     "module_name": "mapnik",
     "module_path": "./lib/binding/",
-    "host": "https://mapbox-node-binary.s3.amazonaws.com",
+    "host": "https://kx-public-node-binaries.s3.amazonaws.com",
     "remote_path": "./{module_name}/v{version}/",
     "package_name": "{node_abi}-{platform}-{arch}-{configuration}{toolset}.tar.gz"
   },

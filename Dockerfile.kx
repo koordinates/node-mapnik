@@ -1,0 +1,46 @@
+# This builds a container capable of doing a build of node-mapnik (with dependencies preinstalled via apt-get)
+# In constrast to upstream build process, this dockerfile doesn't use the Mason package manager,
+# so it gets a fully functional GDAL with curl support, and doesn't need to build GDAL from source.
+#
+FROM --platform=linux/amd64 ubuntu:focal
+LABEL org.opencontainers.image.authors="craig.destigter@koordinates.com"
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update -q
+RUN /bin/bash -c "apt-get install -qy \
+    build-essential \
+    gettext \
+    git-core \
+    make \
+    ssh \
+    python3-pip"
+# note: really fussy with pin versions, since most of these have 'newer' kx-custom-built equivalents.
+# These ones are all the stock ubuntu focal versions.
+RUN /bin/bash -c "apt-get install -qy \
+    libmapnik-dev=3.0.23+ds-1build1 \
+    libproj-dev=6.3.1-1 \
+    proj-data=6.3.1-1 \
+    libgdal-dev=3.0.4+dfsg-1build3 \
+    gdal-data=3.0.4+dfsg-1build3 \
+    libgeotiff-dev=1.5.1-2 \
+    libgeotiff5=1.5.1-2"
+
+ENV NODE_VERSION=8.17.0
+RUN cd /usr/local/ && \
+    curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz" | tar xz --strip-components=1
+
+RUN echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
+
+# NOTE: Populate all these for publishing!
+ENV NPM_TOKEN=
+ENV AWS_ACCESS_KEY_ID=
+ENV AWS_SECRET_ACCESS_KEY=
+
+# for publishing
+ENV AWS_DEFAULT_REGION=ap-southeast-2
+RUN python3 -m pip install awscli
+
+VOLUME /src
+WORKDIR /src
+
+CMD /src/build-and-publish.sh
