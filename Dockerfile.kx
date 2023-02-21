@@ -20,11 +20,14 @@ RUN /bin/bash -c "apt-get install -qy \
     libgdal-dev \
     libgeotiff-dev"
 
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ARG NODE_VERSION
 ENV NODE_VERSION=${NODE_VERSION}
-
-RUN cd /usr/local/ && \
-    curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz" | tar xz --strip-components=1
+# oh wow it's REALLY hard to get nvm working in a dockerfile (!)
+RUN bash -c ". /root/.nvm/nvm.sh && nvm install '${NODE_VERSION}'"
+RUN ln -s /root/.nvm/versions/node/v*/bin/node /usr/bin/node \
+    && ln -s /root/.nvm/versions/node/v*/bin/npm /usr/bin/npm
+RUN node --version
 
 RUN echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
 

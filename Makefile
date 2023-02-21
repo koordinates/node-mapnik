@@ -91,6 +91,8 @@ testpack:
 
 publish-binary:
 	npm version --git-tag-version=false --allow-same-version "3.99.$(PATCH_VERSION_NUMBER)"
+	echo "aws token is $(AWS_ACCESS_KEY_ID)"
+	aws sts get-caller-identity
 	./node_modules/node-pre-gyp/bin/node-pre-gyp package publish
 
 publish-npm:
