@@ -1,0 +1,36 @@
+_build_step: &_build_step
+  command: "make && make publish-binary"
+  plugins:
+    docker-compose#v4.9.0:
+      args:
+        - NODE_VERSION
+      run: mapnikbuilder
+      config: docker-compose.yml
+      env:
+        - NPM_TOKEN
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
+        - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
+    cultureamp/aws-assume-role#v0.2.0:
+      role: "arn:aws:iam::139273981395:role/s3-kx-publish-node-binaries"
+
+steps:
+  - <<: *_build_step
+    name: ":building_construction: Build amd64 binary blob (:nodejs: node=8)"
+    env:
+      NODE_VERSION: "8.17.0"
+
+  - wait
+
+  - name: "Publish npm package"
+    command: "make publish-npm"
+    plugins:
+      docker-compose#v3.7.0:
+        build: mapnikbuilder
+        args:
+          - "NODE_VERSION=8.17.0"
+        run: mapnikbuilder
+        config: docker-compose.yml
+        env:
+          - NPM_TOKEN
+          - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
