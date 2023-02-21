@@ -72,9 +72,12 @@ testpack:
 	tar -ztvf *tgz
 	rm -f ./*tgz
 
-publish:
-	npm version --git-tag-version=false "3.99.$(PATCH_VERSION_NUMBER)"
+publish-binary:
+	npm version --git-tag-version=false --allow-same-version "3.99.$(PATCH_VERSION_NUMBER)"
 	./node_modules/node-pre-gyp/bin/node-pre-gyp package publish
-	npm publish --access=restricted
+
+publish-npm:
+	npm version --git-tag-version=false --allow-same-version "3.99.$(PATCH_VERSION_NUMBER)"
+	npm publish --access=public
 
 .PHONY: test docs
