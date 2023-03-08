@@ -18,8 +18,8 @@ deps/geometry/include/mapbox/geometry.hpp:
 
 pre_build_check:
 	@node -e "console.log('\033[94mNOTICE: to build from source you need mapnik >=',require('./package.json').mapnik_version,'\033[0m');"
-	@echo "Looking for mapnik-config on your PATH..."
-	mapnik-config -v
+	@echo "Looking for pkg-config on your PATH..."
+	pkg-config libmapnik --modversion
 
 release_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp ./node_modules/.bin/node-pre-gyp
 	V=1 CXXFLAGS="-fno-omit-frame-pointer $(PROFILING_FLAG)" ./node_modules/.bin/node-pre-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --clang

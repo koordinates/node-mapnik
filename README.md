@@ -2,7 +2,7 @@
 
 fork of https://github.com/mapnik/node-mapnik
 
-Contains a Dockerfile which uses ubuntu focal deb dependencies, in order to use a GDAL version that supports curl.
+Contains a Dockerfile which uses ubuntu jammy deb dependencies, in order to use a GDAL version that supports curl.
 
 # building and publishing a new package
 

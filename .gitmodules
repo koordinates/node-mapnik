@@ -7,3 +7,7 @@
 [submodule "deps/protozero"]
 	path = deps/protozero
 	url = https://github.com/mapbox/protozero.git
+[submodule "mapnik"]
+	path = deps/mapnik
+	url = git@github.com:mapnik/mapnik.git
+	branch = node-mapnik-v4.5.8

@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.kx
+      args:
+        - ECR
     environment:
       - NPM_TOKEN
       - AWS_ACCESS_KEY_ID

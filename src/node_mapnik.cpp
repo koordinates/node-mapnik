@@ -383,7 +383,6 @@ Napi::Object init(Napi::Env env, Napi::Object exports)
     versions.Set("boost_number", BOOST_VERSION);
     versions.Set("mapnik", node_mapnik::format_version(MAPNIK_VERSION));
     versions.Set("mapnik_number", MAPNIK_VERSION);
-    versions.Set("mapnik_git_describe", MAPNIK_GIT_REVISION);
 #if defined(HAVE_CAIRO)
     versions.Set("cairo", CAIRO_VERSION_STRING);
 #endif
