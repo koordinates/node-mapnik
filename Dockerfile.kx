@@ -2,7 +2,8 @@
 # In constrast to upstream build process, this dockerfile doesn't use the Mason package manager,
 # so it gets a fully functional GDAL with curl support, and doesn't need to build GDAL from source.
 #
-FROM ubuntu:focal
+ARG ECR
+FROM ${ECR}/kx-base-jammy
 LABEL org.opencontainers.image.authors="craig.destigter@koordinates.com"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -13,12 +14,20 @@ RUN /bin/bash -c "apt-get install -qy \
     git-core \
     make \
     ssh \
-    python3-pip"
-RUN /bin/bash -c "apt-get install -qy \
-    libmapnik-dev \
+    python3-pip \
+    software-properties-common"
+
+# Note: 
+# proj/gdal/geotiff come from ubuntugis, but mapnik is a custom build in Koordinates apt repo
+# built from https://github.com/koordinates/mapnik/tree/kx-3.1.x-jammy
+# (because we need newer than the newest release, and I couldn't find any existing deb packages that do it)
+RUN add-apt-repository ppa:ubuntugis/ppa
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/
+RUN /bin/bash -c "apt-get update -q && apt-get install -qy \
     libproj-dev \
     libgdal-dev \
-    libgeotiff-dev"
+    libgeotiff-dev \
+    libmapnik-dev"
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ARG NODE_VERSION
