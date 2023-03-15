@@ -18,9 +18,9 @@ module.exports.paths = {
     'shape_index':   '$(which shapeindex)'
 };
 module.exports.env = {
-    'ICU_DATA':      '$(mapnik-config --icu-data)',
-    'GDAL_DATA':     '$(mapnik-config --gdal-data)',
-    'PROJ_LIB':      '$(mapnik-config --proj-lib)'
+    'ICU_DATA':      '',
+    'GDAL_DATA':     '$(pkg-config --variable=datadir gdal)',
+    'PROJ_LIB':      '$(pkg-config --variable=datadir proj)'
 };
 " >${MODULE_PATH}/mapnik_settings.js
 
