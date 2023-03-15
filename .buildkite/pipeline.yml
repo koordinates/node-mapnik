@@ -14,6 +14,13 @@ _build_step_amd64: &_build_step_amd64
         - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
     cultureamp/aws-assume-role#v0.2.0:
       role: "arn:aws:iam::139273981395:role/s3-kx-publish-node-binaries"
+  agents:
+    queue: "default"
+
+_build_step_arm64: &_build_step_arm64
+  <<: *_build_step_amd64
+  agents:
+    queue: "default_arm64"
 
 steps:
   - group: "build binaries for amd64"
@@ -32,6 +39,22 @@ steps:
         env:
           NODE_VERSION: "16"
 
+  - group: "build binaries for arm64"
+    key: "arm64"
+    steps:
+      - <<: *_build_step_arm64
+        name: ":building_construction: Build arm64 binary (:nodejs: node=12)"
+        env:
+          NODE_VERSION: "12"
+      - <<: *_build_step_arm64
+        name: ":building_construction: Build arm64 binary (:nodejs: node=14)"
+        env:
+          NODE_VERSION: "14"
+      - <<: *_build_step_arm64
+        name: ":building_construction: Build arm64 binary (:nodejs: node=16)"
+        env:
+          NODE_VERSION: "16"
+
   - wait
 
   - name: "Publish npm package"
@@ -40,7 +63,7 @@ steps:
       docker-compose#v3.7.0:
         build: mapnikbuilder
         args:
-          - "NODE_VERSION=8"
+          - "NODE_VERSION=12"
         run: mapnikbuilder
         config: docker-compose.yml
         env:
