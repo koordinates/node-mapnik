@@ -22,7 +22,7 @@ RUN /bin/bash -c "apt-get install -qy \
 # built from https://github.com/koordinates/mapnik/tree/kx-3.1.x-jammy
 # (because we need newer than the newest release, and I couldn't find any existing deb packages that do it)
 RUN add-apt-repository ppa:ubuntugis/ppa
-ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/
+ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/lib/aarch64-linux-gnu/pkgconfig
 RUN /bin/bash -c "apt-get update -q && apt-get install -qy \
     libproj-dev \
     libgdal-dev \
