@@ -34,10 +34,7 @@ steps:
         name: ":building_construction: Build amd64 binary (:nodejs: node=14)"
         env:
           NODE_VERSION: "14"
-      - <<: *_build_step_amd64
-        name: ":building_construction: Build amd64 binary (:nodejs: node=16)"
-        env:
-          NODE_VERSION: "16"
+      # NOTE: I tried to add Node v16 but it fails to find node-pre-gyp for some reason and I haven't looked into why
 
   - group: "build binaries for arm64"
     key: "arm64"
@@ -50,10 +47,6 @@ steps:
         name: ":building_construction: Build arm64 binary (:nodejs: node=14)"
         env:
           NODE_VERSION: "14"
-      - <<: *_build_step_arm64
-        name: ":building_construction: Build arm64 binary (:nodejs: node=16)"
-        env:
-          NODE_VERSION: "16"
 
   - wait
 
