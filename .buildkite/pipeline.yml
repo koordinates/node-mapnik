@@ -12,13 +12,31 @@ _build_step_amd64: &_build_step_amd64
         - AWS_SECRET_ACCESS_KEY
         - AWS_SESSION_TOKEN
         - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
+        - SSE_MATH=true
     cultureamp/aws-assume-role#v0.2.0:
       role: "arn:aws:iam::139273981395:role/s3-kx-publish-node-binaries"
   agents:
     queue: "default"
 
 _build_step_arm64: &_build_step_arm64
-  <<: *_build_step_amd64
+  command: "make && make publish-binary"
+  plugins:
+    docker-compose#v4.9.0:
+      args:
+        - NODE_VERSION
+      run: mapnikbuilder
+      config: docker-compose.yml
+      env:
+        - NPM_TOKEN
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
+        - AWS_SESSION_TOKEN
+        - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
+        # have to turn this off; SSE isn't available on arm64
+        # (but for some reason configure doesn't detect that...)
+        - SSE_MATH=false
+    cultureamp/aws-assume-role#v0.2.0:
+      role: "arn:aws:iam::139273981395:role/s3-kx-publish-node-binaries"
   agents:
     queue: "default_arm64"
 
