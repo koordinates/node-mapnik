@@ -23,6 +23,14 @@ steps:
         name: ":building_construction: Build amd64 binary (:nodejs: node=12)"
         env:
           NODE_VERSION: "12"
+      - <<: *_build_step_amd64
+        name: ":building_construction: Build amd64 binary (:nodejs: node=14)"
+        env:
+          NODE_VERSION: "14"
+      - <<: *_build_step_amd64
+        name: ":building_construction: Build amd64 binary (:nodejs: node=16)"
+        env:
+          NODE_VERSION: "16"
 
   - wait
 
