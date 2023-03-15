@@ -12,8 +12,8 @@ if [[ ! "$(which mapnik-config)" -ef "$MAPNIK_SDK/bin/mapnik-config" ]]; then
     echo "
 var path = require('path');
 module.exports.paths = {
-    'fonts':         '$(mapnik-config --fonts)',
-    'input_plugins': '$(mapnik-config --input-plugins)',
+    'fonts':         '/usr/share/fonts/truetype',
+    'input_plugins': '$(pkg-config --variable=pcfiledir libmapnik)/../mapnik/input',
     'mapnik_index':  '$(which mapnik-index)',
     'shape_index':   '$(which shapeindex)'
 };
@@ -22,7 +22,7 @@ module.exports.env = {
     'GDAL_DATA':     '$(mapnik-config --gdal-data)',
     'PROJ_LIB':      '$(mapnik-config --proj-lib)'
 };
-" > ${MODULE_PATH}/mapnik_settings.js
+" >${MODULE_PATH}/mapnik_settings.js
 
 else
 
@@ -82,7 +82,6 @@ module.exports.env = {
     'GDAL_DATA': path.join(__dirname, 'share/gdal'),
     'PROJ_LIB': path.join(__dirname, 'share/proj')
 };
-" > ${MODULE_PATH}/mapnik_settings.js
-
+" >${MODULE_PATH}/mapnik_settings.js
 
 fi

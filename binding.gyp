@@ -95,9 +95,7 @@
             'defines': ['NOMINMAX','<!@(pkg-config libmapnik --cflags-only-other)'],
             'defines!': ["_HAS_EXCEPTIONS=0"],
             'libraries': [
-              '<!@(pkg-config libmapnik --libs)',
-              'mapnik-wkt.lib',
-              'mapnik-json.lib',
+              '<!@(pkg-config libmapnik --libs)'
             ],
             'msvs_disabled_warnings': [ 4244,4005,4506,4345,4804,4805 ],
             'msvs_settings': {
@@ -115,8 +113,6 @@
             ],
             'libraries':[
               '<!@(pkg-config libmapnik --libs)',
-              '-lmapnik-wkt',
-              '-lmapnik-json',
             ],
             'ldflags': [
               '-Wl,-z,now',
