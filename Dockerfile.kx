@@ -27,7 +27,7 @@ RUN /bin/bash -c "apt-get update -q && apt-get install -qy \
     libproj-dev \
     libgdal-dev \
     libgeotiff-dev \
-    libmapnik-dev"
+    libmapnik-dev=3.1.0+kxci45-git20230315.8df2d85f2"
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 ARG NODE_VERSION
