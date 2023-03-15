@@ -10,7 +10,7 @@
   "binary": {
     "module_name": "mapnik",
     "module_path": "./lib/binding/",
-    "host": "https://kx-public-node-binaries-2.s3.amazonaws.com",
+    "host": "https://kx-public-node-binaries-2.s3.ap-southeast-2.amazonaws.com",
     "remote_path": "./{name}/v{version}/{configuration}/{toolset}/",
     "package_name": "{platform}-{arch}.tar.gz"
   },
