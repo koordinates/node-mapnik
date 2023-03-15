@@ -37,7 +37,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.x",
-    "mapnik-vector-tile": "3.0.1",
+    "mapnik-vector-tile": "https://github.com/mapbox/mapnik-vector-tile/tarball/98ace1c737c6c9a80058835d41de233621394678",
     "node-addon-api": "~3.1.x"
   },
   "bin": {
