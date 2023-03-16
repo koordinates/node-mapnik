@@ -72,7 +72,6 @@ steps:
     command: "make publish-npm"
     plugins:
       docker-compose#v3.7.0:
-        build: mapnikbuilder
         args:
           - "NODE_VERSION=12"
         run: mapnikbuilder
