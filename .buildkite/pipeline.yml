@@ -3,7 +3,9 @@ _build_step_amd64: &_build_step_amd64
   plugins:
     docker-compose#v4.9.0:
       args:
-        - NODE_VERSION
+        # NOTE: I tried to use Node v16 but it fails to find node-pre-gyp for some reason and I haven't looked into why.
+        # NOTE 2: I'm unclear on what Node-API version this makes the resultant binary use.
+        - NODE_VERSION=12
       run: mapnikbuilder
       config: docker-compose.yml
       env:
@@ -23,7 +25,7 @@ _build_step_arm64: &_build_step_arm64
   plugins:
     docker-compose#v4.9.0:
       args:
-        - NODE_VERSION
+        - NODE_VERSION=12
       run: mapnikbuilder
       config: docker-compose.yml
       env:
@@ -45,26 +47,13 @@ steps:
     key: "amd64"
     steps:
       - <<: *_build_step_amd64
-        name: ":building_construction: Build amd64 binary (:nodejs: node=12)"
-        env:
-          NODE_VERSION: "12"
-      - <<: *_build_step_amd64
-        name: ":building_construction: Build amd64 binary (:nodejs: node=14)"
-        env:
-          NODE_VERSION: "14"
-      # NOTE: I tried to add Node v16 but it fails to find node-pre-gyp for some reason and I haven't looked into why
+        name: ":building_construction: Build amd64 binary"
 
   - group: "build binaries for arm64"
     key: "arm64"
     steps:
       - <<: *_build_step_arm64
-        name: ":building_construction: Build arm64 binary (:nodejs: node=12)"
-        env:
-          NODE_VERSION: "12"
-      - <<: *_build_step_arm64
-        name: ":building_construction: Build arm64 binary (:nodejs: node=14)"
-        env:
-          NODE_VERSION: "14"
+        name: ":building_construction: Build arm64 binary"
 
   - wait
 
