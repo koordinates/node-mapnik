@@ -90,13 +90,13 @@ testpack:
 	rm -f ./*tgz
 
 publish-binary:
-	npm version --git-tag-version=false --allow-same-version "3.99.$(PATCH_VERSION_NUMBER)"
+	npm version --git-tag-version=false --allow-same-version "4.99.$(PATCH_VERSION_NUMBER)"
 	echo "aws token is $(AWS_ACCESS_KEY_ID)"
 	aws sts get-caller-identity
 	./node_modules/.bin/node-pre-gyp package publish
 
 publish-npm:
-	npm version --git-tag-version=false --allow-same-version "3.99.$(PATCH_VERSION_NUMBER)"
+	npm version --git-tag-version=false --allow-same-version "4.99.$(PATCH_VERSION_NUMBER)"
 	npm publish --access=public
 
 .PHONY: test docs
