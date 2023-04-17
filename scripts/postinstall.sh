@@ -13,7 +13,7 @@ if [[ ! "$(which mapnik-config)" -ef "$MAPNIK_SDK/bin/mapnik-config" ]]; then
 var path = require('path');
 module.exports.paths = {
     'fonts':         '/usr/share/fonts/truetype',
-    'input_plugins': '$(pkg-config --variable=pcfiledir libmapnik)/../mapnik/input',
+    'input_plugins': '/usr/lib/$(uname -m)-linux-gnu/mapnik/input',
     'mapnik_index':  '$(which mapnik-index)',
     'shape_index':   '$(which shapeindex)'
 };
