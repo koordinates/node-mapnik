@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@mapbox/sphericalmercator": "~1.0.2",
+    "aws-sdk": "^2.1693.0",
     "bytes": "~2.1.0",
     "nyc": "^15.1.0",
     "tape": "^v5.8.1"
