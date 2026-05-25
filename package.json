@@ -7,7 +7,6 @@
   "version": "4.6.0-dev",
   "mapnik_version": "4.0.0",
   "main": "index.js",
-  "private": true,
   "binary": {
     "module_name": "mapnik",
     "module_path": "./lib/binding/",
@@ -39,9 +38,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@mapbox/node-pre-gyp": "^1.x",
-    "node-addon-api": "^8.0.0",
-    "node-gyp-build": "^4.8.1",
-    "prebuildify": "^6.0.1"
+    "node-addon-api": "^8.0.0"
   },
   "bin": {
     "mapnik-index.js": "bin/mapnik-index.js",
@@ -51,8 +48,7 @@
   },
   "scripts": {
     "test": "tape test/*.test.js",
-    "install": "node-gyp-build",
-    "prebuildify": "prebuildify --napi --strip"
+    "install": "node-pre-gyp install --fallback-to-build"
   },
   "devDependencies": {
     "@mapbox/sphericalmercator": "~1.0.2",

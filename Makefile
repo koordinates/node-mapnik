@@ -19,7 +19,7 @@ endif
 deps/geometry/include/mapbox/geometry.hpp:
 	git submodule update --init
 
-./node_modules/.bin/node-pre-gyp:
+node_modules/.package-lock.json:
 	npm install --ignore-scripts
 
 pre_build_check:
@@ -27,12 +27,15 @@ pre_build_check:
 	@echo "Looking for pkg-config on your PATH..."
 	pkg-config libmapnik --modversion
 
-release_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp ./node_modules/.bin/node-gyp
-	V=1 CXXFLAGS="-fno-omit-frame-pointer $(PROFILING_FLAG)" ./node_modules/.bin/node-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --clang
+release_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp node_modules/.package-lock.json
+	V=1 CXXFLAGS="-fno-omit-frame-pointer $(PROFILING_FLAG)" npx node-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --clang
+	./scripts/postinstall.sh
+	rm -f lib/binding/mapnik.node
+	cp build/Release/mapnik.node lib/binding/
 	@echo "run 'make clean' for full rebuild"
 
-debug_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp ./node_modules/.bin/node-gyp
-	V=1 ./node_modules/.bin/node-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --debug --clang
+debug_base: pre_build_check deps/geometry/include/mapbox/geometry.hpp node_modules/.package-lock.json
+	V=1 npx node-gyp configure build --ENABLE_GLIBC_WORKAROUND=true --enable_sse=$(SSE_MATH) --loglevel=error --debug --clang
 	@echo "run 'make clean' for full rebuild"
 
 release:
@@ -72,8 +75,8 @@ distclean: clean
 	rm -rf .toolchain
 	rm -f local.env
 
-xcode: ./node_modules/.bin/node-gyp
-	./node_modules/.bin/node-gyp configure -- -f xcode
+xcode: node_modules/.package-lock.json
+	npx node-gyp configure -- -f xcode
 
 	@# If you need more targets, e.g. to run other npm scripts, duplicate the last line and change NPM_ARGUMENT
 	SCHEME_NAME="$(MODULE_NAME)" SCHEME_TYPE=library BLUEPRINT_NAME=$(MODULE_NAME) BUILDABLE_NAME=$(MODULE_NAME).node scripts/create_scheme.sh
@@ -99,7 +102,7 @@ publish-binary:
 	npm version --git-tag-version=false --allow-same-version "4.99.$(PATCH_VERSION_NUMBER)"
 	echo "aws token is $(AWS_ACCESS_KEY_ID)"
 	aws sts get-caller-identity
-	./node_modules/.bin/node-pre-gyp package publish
+	npx node-pre-gyp package publish
 
 publish-npm:
 	npm version --git-tag-version=false --allow-same-version "4.99.$(PATCH_VERSION_NUMBER)"

@@ -2,10 +2,6 @@ _build_step_amd64: &_build_step_amd64
   command: "make && make publish-binary"
   plugins:
     docker-compose#v4.9.0:
-      args:
-        # NOTE: I tried to use Node v16 but it fails to find node-pre-gyp for some reason and I haven't looked into why.
-        # NOTE 2: I'm unclear on what Node-API version this makes the resultant binary use.
-        - NODE_VERSION=12
       run: mapnikbuilder
       config: docker-compose.yml
       env:
@@ -24,8 +20,6 @@ _build_step_arm64: &_build_step_arm64
   command: "make && make publish-binary"
   plugins:
     docker-compose#v4.9.0:
-      args:
-        - NODE_VERSION=12
       run: mapnikbuilder
       config: docker-compose.yml
       env:
@@ -34,8 +28,6 @@ _build_step_arm64: &_build_step_arm64
         - AWS_SECRET_ACCESS_KEY
         - AWS_SESSION_TOKEN
         - "PATCH_VERSION_NUMBER=${BUILDKITE_BUILD_NUMBER}"
-        # have to turn this off; SSE isn't available on arm64
-        # (but for some reason configure doesn't detect that...)
         - SSE_MATH=false
     cultureamp/aws-assume-role#v0.2.0:
       role: "arn:aws:iam::139273981395:role/s3-kx-publish-node-binaries"
@@ -61,8 +53,6 @@ steps:
     command: "make publish-npm"
     plugins:
       docker-compose#v3.7.0:
-        args:
-          - "NODE_VERSION=12"
         run: mapnikbuilder
         config: docker-compose.yml
         env:

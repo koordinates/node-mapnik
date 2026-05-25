@@ -43,25 +43,7 @@
         "src/mapnik_featureset.cpp",
         "src/mapnik_expression.cpp",
         "src/mapnik_cairo_surface.cpp",
-        "src/mapnik_vector_tile.cpp",
-        "src/mapnik_vector_tile_data.cpp",
-        "src/mapnik_vector_tile_query.cpp",
-        "src/mapnik_vector_tile_json.cpp",
-        "src/mapnik_vector_tile_info.cpp",
-        "src/mapnik_vector_tile_simple_valid.cpp",
-        "src/mapnik_vector_tile_render.cpp",
-        "src/mapnik_vector_tile_clear.cpp",
-        "src/mapnik_vector_tile_image.cpp",
-        "src/mapnik_vector_tile_composite.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_compression.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_datasource_pbf.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_featureset_pbf.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_geometry_decoder.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_geometry_encoder_pbf.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_layer.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_processor.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_raster_clipper.cpp",
-        "deps/mapnik-vector-tile/src/vector_tile_tile.cpp"
+        "src/mapnik_vector_tile_stub.cpp"
       ],
       'include_dirs': [
         './src',
@@ -69,10 +51,9 @@
         "./deps/geometry/include/",
         "./deps/protozero/include/",
         "./deps/wagyu/include/",
-        "./deps/mapnik-vector-tile/src"
       ],
       'defines': [
-          'MAPNIK_VECTOR_TILE_LIBRARY=1',
+          'MAPNIK_GIT_REVISION="<!@(pkg-config libmapnik --modversion)"',
       ],
       'conditions': [
         ['"<!@(uname -p)"=="x86_64"',{

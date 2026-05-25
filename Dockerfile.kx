@@ -1,53 +1,31 @@
-# This builds a container capable of doing a build of node-mapnik (with dependencies preinstalled via apt-get)
-# In constrast to upstream build process, this dockerfile doesn't use the Mason package manager,
-# so it gets a fully functional GDAL with curl support, and doesn't need to build GDAL from source.
-#
-ARG ECR
-FROM ${ECR}/kx-base-jammy
-LABEL org.opencontainers.image.authors="craig.destigter@koordinates.com"
+FROM 276514628126.dkr.ecr.ap-southeast-2.amazonaws.com/trixiebuild:master.latest
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -q
-RUN /bin/bash -c "apt-get install -qy \
+RUN apt-get install -qy --no-install-recommends \
     build-essential \
     gettext \
     git-core \
     make \
     ssh \
     python3-pip \
-    software-properties-common"
-
-# Note: 
-# proj/gdal/geotiff come from ubuntugis, but mapnik is a custom build in Koordinates apt repo
-# built from https://github.com/koordinates/mapnik/tree/kx-3.1.x-jammy
-# (because we need newer than the newest release, and I couldn't find any existing deb packages that do it)
-RUN add-apt-repository ppa:ubuntugis/ppa
-ENV PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:/usr/lib/aarch64-linux-gnu/pkgconfig
-RUN /bin/bash -c "apt-get update -q && apt-get install -qy \
+    nodejs \
+    npm \
     libproj-dev \
     libgdal-dev \
     libgeotiff-dev \
-    libmapnik-dev=3.1.0+kxci61-git20240126.80a89da30"
+    libmapnik-dev
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-ARG NODE_VERSION
-ENV NODE_VERSION=${NODE_VERSION}
-# oh wow it's REALLY hard to get nvm working in a dockerfile (!)
-RUN bash -c ". /root/.nvm/nvm.sh && nvm install '${NODE_VERSION}'"
-RUN ln -s /root/.nvm/versions/node/v*/bin/node /usr/bin/node \
-    && ln -s /root/.nvm/versions/node/v*/bin/npm /usr/bin/npm
 RUN node --version
 
 RUN echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > ~/.npmrc
 
-# NOTE: Populate all these for publishing!
 ENV NPM_TOKEN=
 ENV AWS_ACCESS_KEY_ID=
 ENV AWS_SECRET_ACCESS_KEY=
 
-# for publishing
 ENV AWS_DEFAULT_REGION=ap-southeast-2
-RUN python3 -m pip install awscli
+RUN pip install --break-system-packages awscli
 
 VOLUME /src
 WORKDIR /src

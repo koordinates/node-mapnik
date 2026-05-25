@@ -1,10 +1,4 @@
-// Vector Tile
-#define _USE_MATH_DEFINES
-#include <cmath> // M_PI
-#include "vector_tile_config.hpp"
-
 // node-mapnik
-#include "mapnik_vector_tile.hpp"
 #include "mapnik_map.hpp"
 #include "mapnik_color.hpp"
 #include "mapnik_geometry.hpp"
@@ -302,15 +296,6 @@ void init_image_scalings(Napi::Env env, Napi::Object exports)
  * @property {number} positive
  * @property {number} negative
  */
-void init_polygon_fill_types(Napi::Env env, Napi::Object exports)
-{
-    Napi::Object polygon_fill_types = Napi::Object::New(env);
-    polygon_fill_types.Set("evenOdd", Napi::Number::New(env, mapnik::vector_tile_impl::even_odd_fill));
-    polygon_fill_types.Set("nonZero", Napi::Number::New(env, mapnik::vector_tile_impl::non_zero_fill));
-    polygon_fill_types.Set("positive", Napi::Number::New(env, mapnik::vector_tile_impl::positive_fill));
-    polygon_fill_types.Set("negative", Napi::Number::New(env, mapnik::vector_tile_impl::negative_fill));
-    exports.Set("polygonFillType", polygon_fill_types);
-}
 
 /**
  * Constants representing `std::async` threading mode (aka [launch policy](http://en.cppreference.com/w/cpp/thread/launch)).
@@ -368,12 +353,10 @@ Napi::Object init(Napi::Env env, Napi::Object exports)
     Grid::Initialize(env, exports, node_mapnik::prop_attr);
     GridView::Initialize(env, exports, node_mapnik::prop_attr);
 #endif
-    VectorTile::Initialize(env, exports, node_mapnik::prop_attr);
     // enums
     init_image_types(env, exports);
     init_image_scalings(env, exports);
     init_image_comp_op(env, exports);
-    init_polygon_fill_types(env, exports);
     init_threading_mode_types(env, exports);
 
     // versions

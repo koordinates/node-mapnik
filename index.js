@@ -3,7 +3,8 @@
 var exists = require('fs').existsSync || require('path').existsSync;
 var os = require('os');
 var path = require('path');
-var binding_path = require('node-gyp-build').path();
+var binary = require('@mapbox/node-pre-gyp');
+var binding_path = binary.find(path.resolve(path.join(__dirname, './package.json')));
 var settings_path = path.join(path.dirname(binding_path),'mapnik_settings.js');
 var settings = require(settings_path);
 
@@ -28,7 +29,7 @@ if (settings.env) {
     }
 }
 
-var binding = require('node-gyp-build')(__dirname)
+var binding = require(binding_path)
 module.exports = binding
 
 binding.module_path = path.dirname(binding_path);
